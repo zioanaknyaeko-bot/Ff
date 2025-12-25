@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Quiz Free Fire 🔥</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+body{
+    margin:0;
+    min-height:100vh;
+    background:radial-gradient(circle at top,#ff512f,#8e0e00);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.container{
+    background:#111;
+    color:#fff;
+    width:90%;
+    max-width:540px;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,.6);
+    animation:fade .6s ease;
+}
+@keyframes fade{
+    from{opacity:0; transform:scale(.95)}
+    to{opacity:1; transform:scale(1)}
+}
+h1{
+    text-align:center;
+    color:#ffcc00;
+}
+p{
+    text-align:center;
+    color:#ccc;
+}
+button{
+    width:100%;
+    padding:14px;
+    margin-top:15px;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+    background:#ffcc00;
+    cursor:pointer;
+}
+button:hover{
+    background:#ffd633;
+}
+.progress{
+    text-align:center;
+    font-size:14px;
+    color:#aaa;
+}
+.question{
+    font-size:18px;
+    margin:20px 0;
+}
+.option{
+    background:#1f1f1f;
+    padding:14px;
+    margin:12px 0;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.25s;
+    border:2px solid transparent;
+}
+.option:hover{
+    background:#2a2a2a;
+}
+.option.correct{
+    background:#2ecc71;
+    border-color:#27ae60;
+}
+.option.wrong{
+    background:#e74c3c;
+    border-color:#c0392b;
+}
+button:disabled{
+    background:#555;
+    cursor:not-allowed;
+}
+.score{
+    text-align:center;
+}
+.rank{
+    font-size:20px;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="dashboard">
+    <h1>🔥 Quiz Free Fire 🔥</h1>
+    <p>Uji seberapa jago pengetahuan kamu tentang Free Fire</p>
+    <p>📌 Total Soal: <b>15</b></p>
+    <p>🎯 Pilih jawaban yang benar</p>
+    <button onclick="startQuiz()">Mulai Quiz</button>
+</div>
+
+<div class="container" id="quiz" style="display:none">
+    <h1>Quiz Free Fire</h1>
+    <div class="progress" id="progress"></div>
+    <div class="question" id="question"></div>
+    <div id="options"></div>
+    <button id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+</div>
+
+<script>
+const questions = [
+ {question:"Siapa developer Free Fire?",options:["Garena","Tencent","Moonton","Riot"],answer:0},
+ {question:"Jumlah pemain dalam 1 match?",options:["40","50","60","100"],answer:1},
+ {question:"Skill 'Drop The Beat' milik siapa?",options:["Chrono","DJ Alok","Kelly","Hayato"],answer:1},
+ {question:"Senjata jarak dekat?",options:["MP40","Katana","AWM","SCAR"],answer:1},
+ {question:"Mode 4v4 Free Fire?",options:["Ranked","Training","Clash Squad","Custom"],answer:2},
+ {question:"Karakter ninja Jepang?",options:["Hayato","Andrew","Wukong","Rafael"],answer:0},
+ {question:"Pet berbentuk panda?",options:["Falco","Mr. Waggor","Poring","Detective Panda"],answer:3},
+ {question:"Senjata shotgun?",options:["MP5","M1014","AK","Famas"],answer:1},
+ {question:"Map pertama Free Fire?",options:["Bermuda","Kalahari","Alpine","Purgatory"],answer:0},
+ {question:"Role sniper terbaik?",options:["AWM","M1887","UMP","Groza"],answer:0},
+ {question:"Karakter time shield?",options:["Skyler","Chrono","Alok","Dasha"],answer:1},
+ {question:"Pet yang menambah EP?",options:["Falco","Poring","Ottero","Rockie"],answer:2},
+ {question:"Item revive?",options:["Medkit","Inhaler","Gloo Wall","Revive Kit"],answer:3},
+ {question:"Senjata SMG?",options:["MP40","M1014","AWM","M60"],answer:0},
+ {question:"Mode paling kompetitif?",options:["Custom","Training","Clash Squad","Ranked"],answer:2}
+];
+
+let index=0,score=0,answered=false;
+
+const dashboard=document.getElementById("dashboard");
+const quiz=document.getElementById("quiz");
+const questionEl=document.getElementById("question");
+const optionsEl=document.getElementById("options");
+const progressEl=document.getElementById("progress");
+const nextBtn=document.getElementById("nextBtn");
+
+function startQuiz(){
+    dashboard.style.display="none";
+    quiz.style.display="block";
+    loadQuestion();
+}
+
+function loadQuestion(){
+    answered=false;
+    nextBtn.disabled=true;
+    optionsEl.innerHTML="";
+    progressEl.innerText=`Soal ${index+1} dari ${questions.length}`;
+    questionEl.innerText=questions[index].question;
+
+    questions[index].options.forEach((opt,i)=>{
+        const div=document.createElement("div");
+        div.className="option";
+        div.innerText=opt;
+        div.onclick=()=>selectOption(div,i);
+        optionsEl.appendChild(div);
+    });
+}
+
+function selectOption(el,i){
+    if(answered)return;
+    answered=true;
+    nextBtn.disabled=false;
+    const correct=questions[index].answer;
+    document.querySelectorAll(".option").forEach((o,idx)=>{
+        if(idx===correct)o.classList.add("correct");
+        if(idx===i && i!==correct)o.classList.add("wrong");
+    });
+    if(i===correct)score++;
+}
+
+function nextQuestion(){
+    index++;
+    if(index<questions.length){
+        loadQuestion();
+    }else{
+        let rank="Pemula 😅";
+        if(score>=13)rank="Master FF 👑";
+        else if(score>=10)rank="Pro Player 🔥";
+        else if(score>=6)rank="Cukup Jago 👍";
+
+        quiz.innerHTML=`
+        <div class="score">
+            <h1>Quiz Selesai 🎉</h1>
+            <p>Skor Kamu</p>
+            <h1>${score}/${questions.length}</h1>
+            <div class="rank">${rank}</div>
+            <button onclick="location.reload()">Main Lagi</button>
+        </div>`;
+    }
+}
+</script>
+
+</body>
+</html>
